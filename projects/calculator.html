@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>calculator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Inter:wght@400;500&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/calculator.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a href="/index.html">&#x263C;</a>
+        </div>
+        <nav class="nav-links">
+            <a href="/pages/work.html">WORK</a> /
+            <a href="/pages/about.html">ABOUT</a> /
+            <a href="/pages/shop.html">SHOP</a> /
+            <a href="/pages/notes.html">NOTES</a> /
+            <a href="/pages/etc.html">ETC.</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="calculator-container">
+            <h1>Calculator</h1>
+            <div id="calculator">
+                <input id="display" readonly>
+                <div id="keys">
+                    <button onclick="appendToDisplay('+')" class="operator-btn">+</button>
+                    <button onclick="appendToDisplay('7')">7</button>
+                    <button onclick="appendToDisplay('8')">8</button>
+                    <button onclick="appendToDisplay('9')">9</button>
+                    <button onclick="appendToDisplay('-')" class="operator-btn">-</button>
+                    <button onclick="appendToDisplay('4')">4</button>
+                    <button onclick="appendToDisplay('5')">5</button>
+                    <button onclick="appendToDisplay('6')">6</button>
+                    <button onclick="appendToDisplay('*')" class="operator-btn">*</button>
+                    <button onclick="appendToDisplay('1')">1</button>
+                    <button onclick="appendToDisplay('2')">2</button>
+                    <button onclick="appendToDisplay('3')">3</button>
+                    <button onclick="appendToDisplay('/')" class="operator-btn">/</button>
+                    <button onclick="appendToDisplay('0')">0</button>
+                    <button onclick="appendToDisplay('.')">.</button>
+                    <button onclick="calculate()">=</button>
+                    <button onclick="clearDisplay()" class="operator-btn">C</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="social-icons">
+            <a href="https://github.com/tymastrangelo" target="_blank"><i class="fab fa-github"></i></a> <!-- GitHub -->
+            <a href="https://www.linkedin.com/in/tymastrangelo" target="_blank"><i class="fab fa-linkedin-in"></i></a> <!-- LinkedIn -->
+            <a href="https://www.instagram.com/tymastrangelo" target="_blank"><i class="fab fa-instagram"></i></a> <!-- Instagram -->
+            <a href="https://www.tiktok.com/@tymastrangelo" target="_blank"><i class="fab fa-tiktok"></i></a> <!-- TikTok -->
+        </div>
+        <p>&copy; 2006-2025</p>
+        <p>tmastrangelo@elon.edu — (239) 293-8511</p>
+    </footer>
+
+    <script src="/assets/js/calculator.js"></script>
+    <script src="/assets/js/script.js"></script>
+</body>
+</html>

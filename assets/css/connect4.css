@@ -1,0 +1,91 @@
+.game-container {
+    text-align: center;
+    padding: 50px 20px;
+    position: relative;
+}
+
+.game-container h1 {
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+#board {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    width: fit-content;
+    padding: 10px;
+    background-color: blue;
+    border-radius: 10px;
+    border: 8px solid navy;
+    margin: 20px auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.tile {
+    width: 70px;
+    height: 70px;
+    background-color: white;
+    border-radius: 50%;
+    border: 5px solid navy;
+    transition: transform 0.2s ease-in-out;
+}
+
+.tile:hover {
+    transform: scale(1.1);
+}
+
+.red-piece {
+    background-color: red;
+}
+
+.yellow-piece {
+    background-color: yellow;
+}
+
+/* Overlay for Winner Announcement */
+#winner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    font-weight: bold;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    text-transform: uppercase;
+}
+
+/* Overlay Button Styling */
+.play-again-btn {
+    position: absolute;
+    top: 65%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    background: linear-gradient(to right, #ff416c, #ff4b2b);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out, background 0.3s ease-in-out;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    pointer-events: none; /* Prevent clicking when hidden */
+}
+
+.play-again-btn:hover {
+    background: linear-gradient(to right, #ff4b2b, #ff416c);
+    transform: translate(-50%, -50%) scale(1.05);
+}
+
+.play-again-btn:active {
+    transform: translate(-50%, -50%) scale(0.95);
+}
