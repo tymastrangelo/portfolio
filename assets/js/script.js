@@ -3,12 +3,12 @@ document.addEventListener("DOMContentLoaded", function () {
     transitionDiv.classList.add("page-transition");
     document.body.appendChild(transitionDiv);
 
-    // Ensure fade-in effect happens properly
+    // Ensure fade-in effect on page load
     setTimeout(() => {
         transitionDiv.classList.add("fade-out");
         setTimeout(() => {
             transitionDiv.style.display = "none";
-        }, 500); // Slightly longer fade time to avoid cutoff
+        }, 300); // Fade duration
     }, 50);
 
     // Handle link transitions
@@ -18,15 +18,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 e.preventDefault();
                 let href = this.href;
 
-                // Prevent double-clicking from triggering issues
-                if (transitionDiv.style.display === "block") return;
-
+                // Start fade-out transition
                 transitionDiv.style.display = "block";
                 setTimeout(() => {
                     transitionDiv.classList.remove("fade-out");
+
+                    // Allow navigation AFTER transition completes
                     setTimeout(() => {
                         window.location.href = href;
-                    }, 500); // Ensures fade completes before navigating
+                    }, 300); // Matches the fade-out duration
                 }, 50);
             });
         }

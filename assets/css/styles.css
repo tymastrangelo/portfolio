@@ -20,7 +20,7 @@ header {
     align-items: center;
     width: 90%;
     max-width: 1200px;
-    margin: 20px auto;
+    margin: 10px auto 30px auto; /* Reducing top margin */
     font-family: 'Source Code Pro', monospace;
     font-size: 14px;
     text-transform: uppercase;
@@ -41,17 +41,19 @@ header {
 
 .nav-links {
     display: flex;
-    gap: 8px;
+    gap: 12px; /* Slightly increase spacing */
 }
 
 .nav-links a {
     text-decoration: none;
     color: black;
-    opacity: 0.7;
+    opacity: 0.8;
+    transition: opacity 0.3s ease, transform 0.2s ease;
 }
 
 .nav-links a:hover {
     opacity: 1;
+    transform: scale(1.05); /* Subtle hover effect */
 }
 
 main {
@@ -66,7 +68,12 @@ main {
     font-size: 32px;
     max-width: 700px;
     padding: 0 20px;
-    transform: translateY(-10%); /* Slight lift to account for visual balance */
+    transform: none; /* Removing the unnecessary translateY */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 70vh; /* Ensuring it naturally centers better */
 }
 
 .hero a {
