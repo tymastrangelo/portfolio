@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>shop</title>
-    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Inter:wght@400;500&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
+    <title>Shop</title>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="/assets/css/shop.css">
 </head>
 <body>
     <header>
@@ -23,9 +24,32 @@
     </header>
 
     <main>
-        <section class="placeholder-container">
-            <h1>Coming Soon</h1>
-            <p>This shop page is under development. Stay tuned for updates!</p>
+        <section class="shop-container">
+            <h1>3D Printed Products</h1>
+
+            <!-- Search bar -->
+            <input type="text" id="search" placeholder="Search for products..." onkeyup="searchProducts()">
+
+            <!-- Product grid -->
+            <div class="product-grid">
+                <a href="/pages/shop/candy-machine.html" class="product-card" data-name="Candy Machine">
+                    <img src="/assets/images/candy-machine.jpg" alt="Candy Machine">
+                    <h2>Candy Machine</h2>
+                    <p>$25.00</p>
+                </a>
+
+                <a href="/pages/shop/batcat.html" class="product-card" data-name="BatCat Mask">
+                    <img src="/assets/images/batcat.jpg" alt="BatCat Mask">
+                    <h2>BatCat Mask</h2>
+                    <p>$10.00</p>
+                </a>
+
+                <a href="/pages/shop/flexi-octopus.html" class="product-card" data-name="Octopus">
+                    <img src="/assets/images/flexi-octopus.jpg" alt="Octopus">
+                    <h2>Flexible Octopus</h2>
+                    <p>$12.00</p>
+                </a>
+            </div>
         </section>
     </main>
 
@@ -41,5 +65,6 @@
     </footer>
 
     <script src="/assets/js/script.js"></script>
+    <script src="/assets/js/shop.js"></script>
 </body>
 </html>

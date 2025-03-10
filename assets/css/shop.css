@@ -1,0 +1,173 @@
+/* Shop Page Custom Styles */
+
+.shop-container {
+    text-align: center;
+    padding: 40px 20px; /* Reduce top padding */
+    margin-top: -40px;  /* Pull section closer to the header */
+}
+
+/* Reduce any unnecessary spacing in main */
+main {
+    min-height: unset; /* Prevents forcing extra space */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Push content up */
+}
+
+/* Ensure footer does not push content down */
+footer {
+    margin-top: 10px; /* Reduce space above footer */
+}
+
+/* Search Bar */
+#search {
+    width: 80%;
+    max-width: 400px;
+    padding: 10px;
+    margin: 20px auto;
+    display: block;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Product Grid Layout */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Individual Product Cards */
+.product-card {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 12px;
+    text-decoration: none;
+    color: black;
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Product Images */
+.product-card img {
+    width: 100%;
+    max-width: 200px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+/* Product Titles */
+.product-card h2 {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+/* Product Prices */
+.product-card p {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 600px) {
+    .product-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 products per row */
+    }
+    
+    .product-card {
+        padding: 12px; /* Slightly smaller padding */
+    }
+
+    .product-card img {
+        max-width: 120px; /* Adjust image size for smaller layout */
+    }
+}
+
+/* Product Page Styling */
+.product-detail {
+    text-align: center;
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.product-detail img {
+    width: 100%;
+    max-width: 300px;
+    border-radius: 10px;
+    margin: 20px 0;
+}
+
+.product-detail h1 {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.product-detail p {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+/* Buy Now Button */
+.product-detail button {
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background 0.3s ease;
+}
+
+.product-detail button:hover {
+    background-color: #333;
+}
+
+/* Back Arrow */
+.back-arrow {
+    display: inline-block;
+    font-size: 16px;
+    text-decoration: none;
+    color: black;
+    margin-left: 20px;
+    transition: opacity 0.3s ease;
+}
+
+.back-arrow:hover {
+    opacity: 0.7;
+}
+
+/* Mobile Responsive */
+@media (max-width: 600px) {
+    .product-detail {
+        margin: 30px auto;
+        padding: 15px;
+    }
+
+    .product-detail h1 {
+        font-size: 24px;
+    }
+
+    .product-detail p {
+        font-size: 16px;
+    }
+
+    .product-detail button {
+        font-size: 16px;
+        padding: 10px 16px;
+    }
+}
