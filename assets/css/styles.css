@@ -18,9 +18,9 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 90%;
+    width: 100%;
     max-width: 1200px;
-    margin: 10px auto 30px auto; /* Reducing top margin */
+    margin: 10px auto 20px auto; /* Reducing top margin */
     font-family: 'Source Code Pro', monospace;
     font-size: 14px;
     text-transform: uppercase;
@@ -28,9 +28,10 @@ header {
 }
 
 .logo {
-    font-size: 32px; /* Increase the size */
+    font-size: 36px; /* Keep it bold and visible */
     font-weight: bold;
-    line-height: 1; /* Ensures it doesn’t expand the height of the header */
+    line-height: 1;
+    padding-left: 5px; /* Slightly move closer to left */
 }
 
 .logo a {
@@ -224,7 +225,7 @@ canvas {
 /* about styles */
 .about-container {
     text-align: center;
-    padding: 50px 20px;
+    padding: 30px 20px; /* Reduce top padding */
     max-width: 900px;
     margin: 0 auto;
 }
