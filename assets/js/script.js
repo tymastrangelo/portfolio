@@ -32,3 +32,14 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    const navLinks = document.querySelectorAll(".nav-links a");
+    const currentPage = window.location.pathname.split("/").pop(); // Get current file name
+
+    navLinks.forEach(link => {
+        if (link.getAttribute("href").includes(currentPage)) {
+            link.classList.add("active"); // Apply active class to matching link
+        }
+    });
+});

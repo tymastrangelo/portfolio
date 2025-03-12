@@ -60,6 +60,10 @@ header {
     transform: scale(1.05); /* Subtle hover effect */
 }
 
+.nav-links a.active {
+    font-weight: bolder;
+}
+
 main {
     display: flex;
     flex-direction: column;
