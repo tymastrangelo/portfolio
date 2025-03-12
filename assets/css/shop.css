@@ -59,8 +59,9 @@ footer {
 
 /* Product Images */
 .product-card img {
-    width: 100%;
-    max-width: 200px;
+    width: 200px;  /* Set fixed width */
+    height: 200px; /* Set fixed height */
+    object-fit: cover; /* Ensures images fill the space without distortion */
     border-radius: 8px;
     margin-bottom: 10px;
 }
