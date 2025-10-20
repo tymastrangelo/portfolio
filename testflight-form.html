@@ -1,0 +1,231 @@
+
+<!--
+	TestFlight form
+	Webhook: https://n8n.tymastrangelo.com/webhook/c2942e75-de52-4056-a1ca-2a049bce5799
+
+	Testing notes:
+	- This page POSTs JSON to the webhook above. To test locally, open the file in the browser (or serve the folder) and submit the form.
+	- Required fields: Full Name, Elon Email (must end with @elon.edu), Apple ID Email.
+	- On success the page redirects to /thank-you.html. Inspect network requests to see the JSON payload.
+-->
+
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>🧩 Join the Quad Beta Team – Winter 2025</title>
+	<link rel="stylesheet" href="/css/styles.css">
+	<style>
+		/* Mobile-first form styles (kept simple and self-contained) */
+		:root{--accent:#0b7285;--muted:#6b7280;--danger:#d53f3f}
+		body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Helvetica Neue',Arial;margin:0;background:#f8fafc;color:#0f172a;padding:18px}
+		.container{max-width:760px;margin:0 auto;background:#fff;border-radius:12px;padding:20px;box-shadow:0 6px 18px rgba(15,23,42,0.06)}
+		h1{font-size:20px;margin:0 0 8px}
+		p.lead{color:var(--muted);margin:0 0 18px}
+		form{display:grid;gap:12px}
+		label{font-size:13px;color:#111827;display:block;margin-bottom:6px}
+		input[type=text],input[type=email],select,textarea{width:100%;padding:10px 12px;border:1px solid #e6eef5;border-radius:8px;font-size:15px;background:#fff}
+		input:focus,select:focus,textarea:focus{outline:none;box-shadow:0 0 0 3px rgba(11,114,133,0.08);border-color:var(--accent)}
+		.row{display:grid;grid-template-columns:1fr;gap:12px}
+		.small{font-size:13px;color:var(--muted)}
+		.toggle{display:flex;align-items:center;gap:10px}
+		.switch{position:relative;width:44px;height:26px;background:#e6eef5;border-radius:999px;cursor:pointer}
+		.knob{position:absolute;top:3px;left:3px;width:20px;height:20px;background:#fff;border-radius:50%;transition:transform .18s ease,background .18s}
+		.switch.on{background:var(--accent)}
+		.switch.on .knob{transform:translateX(18px)}
+		.actions{display:flex;gap:10px;align-items:center;margin-top:6px}
+		button[type=submit]{background:var(--accent);color:#fff;border:none;padding:10px 14px;border-radius:10px;font-weight:600;cursor:pointer}
+		button[disabled]{opacity:.6;cursor:default}
+		.note{font-size:13px;color:var(--muted);margin-top:6px}
+		.error{color:var(--danger);font-size:13px}
+		.success{color:green;font-size:14px}
+		@media(min-width:720px){.row.two{grid-template-columns:1fr 1fr}}
+	</style>
+</head>
+<body>
+	<main class="container" role="main">
+		<h1>🧩 Join the Quad Beta Team – Winter 2025</h1>
+		<p class="lead">Thank you for your interest in helping test Quad, a new student-built app for discovering and sharing Elon campus events.
+		By joining the beta, you’ll get early access via Apple TestFlight and can share feedback that directly shapes the final version before our full launch in Fall 2026.</p>
+
+		<form id="betaForm" novalidate>
+			<div class="row">
+				<div>
+					<label for="fullName">Full Name <span class="small" aria-hidden="true">*</span></label>
+					<input id="fullName" name="fullName" type="text" inputmode="text" autocomplete="name" required>
+					<div id="fullNameError" class="error" aria-live="polite"></div>
+				</div>
+
+				<div>
+					<label for="elonEmail">Elon Email Address <span class="small" aria-hidden="true">*</span></label>
+					<input id="elonEmail" name="elonEmail" type="email" inputmode="email" placeholder="you@elon.edu" autocomplete="email" required>
+					<div id="elonEmailError" class="error" aria-live="polite"></div>
+				</div>
+
+				<div>
+					<label for="appleEmail">Apple ID Email <span class="small" aria-hidden="true">*</span></label>
+					<input id="appleEmail" name="appleEmail" type="email" inputmode="email" placeholder="appleid@example.com" required>
+					<div id="appleEmailError" class="error" aria-live="polite"></div>
+					<div class="note">(Only used to send your TestFlight invite — it won’t be shared.)</div>
+				</div>
+
+				<div>
+					<label for="year">Year at Elon</label>
+					<select id="year" name="year">
+						<option value="">Select year</option>
+						<option>First-Year</option>
+						<option>Sophomore</option>
+						<option>Junior</option>
+						<option>Senior</option>
+					</select>
+				</div>
+
+				<div>
+					<label for="orgs">Are you involved in any student organizations or clubs? <span class="small">(optional)</span></label>
+					<input id="orgs" name="orgs" type="text" placeholder="Club names or roles">
+				</div>
+
+				<div>
+					<label for="why">Why are you interested in testing Quad? <span class="small">(optional)</span></label>
+					<textarea id="why" name="why" rows="4" placeholder="A short note..." ></textarea>
+				</div>
+
+				<div>
+					<label>Would you like to receive updates about Quad’s launch?</label>
+					<div class="toggle" role="group" aria-label="Receive updates">
+						<div id="updatesSwitch" class="switch" role="switch" aria-checked="true" tabindex="0">
+							<div class="knob"></div>
+						</div>
+						<div id="updatesLabel">Yes</div>
+					</div>
+					<input type="hidden" id="updatesOptIn" name="updatesOptIn" value="true">
+				</div>
+			</div>
+
+			<div class="actions">
+				<button id="submitBtn" type="submit">🚀 Join the Beta</button>
+				<div id="formMessage" aria-live="polite"></div>
+			</div>
+		</form>
+
+		<div class="note" style="margin-top:14px">By submitting you agree to receive a TestFlight invite if selected. Your Apple ID email is only used for invites and will not be shared.</div>
+	</main>
+
+	<script>
+		// Configuration
+		const WEBHOOK = 'https://n8n.tymastrangelo.com/webhook/c2942e75-de52-4056-a1ca-2a049bce5799';
+
+		// Elements
+		const form = document.getElementById('betaForm');
+		const submitBtn = document.getElementById('submitBtn');
+		const formMessage = document.getElementById('formMessage');
+
+		const fullName = document.getElementById('fullName');
+		const elonEmail = document.getElementById('elonEmail');
+		const appleEmail = document.getElementById('appleEmail');
+		const year = document.getElementById('year');
+		const orgs = document.getElementById('orgs');
+		const why = document.getElementById('why');
+		const updatesSwitch = document.getElementById('updatesSwitch');
+		const updatesLabel = document.getElementById('updatesLabel');
+		const updatesOptIn = document.getElementById('updatesOptIn');
+
+		// Simple helpers
+		function setError(el, msg){
+			const e = document.getElementById(el.id + 'Error');
+			if(msg){ e.textContent = msg; el.setAttribute('aria-invalid','true'); }
+			else { e.textContent = ''; el.removeAttribute('aria-invalid'); }
+		}
+
+		function validateEmail(value){
+			// basic validation
+			return /\S+@\S+\.\S+/.test(value);
+		}
+
+		function validateForm(){
+			let ok = true;
+			// Full name
+			if(!fullName.value.trim()){ setError(fullName,'Please enter your full name.'); ok = false; }
+			else setError(fullName,'');
+
+			// Elon email required and must be @elon.edu
+			const elonVal = elonEmail.value.trim();
+			if(!elonVal){ setError(elonEmail,'Please enter your Elon email.'); ok = false; }
+			else if(!validateEmail(elonVal) || !elonVal.toLowerCase().endsWith('@elon.edu')){
+				setError(elonEmail,'Please enter a valid Elon email ending with @elon.edu.'); ok = false;
+			} else setError(elonEmail,'');
+
+			// Apple ID email required
+			const appleVal = appleEmail.value.trim();
+			if(!appleVal){ setError(appleEmail,'Please enter your Apple ID email for TestFlight.'); ok = false; }
+			else if(!validateEmail(appleVal)){ setError(appleEmail,'Please enter a valid email address.'); ok = false; }
+			else setError(appleEmail,'');
+
+			return ok;
+		}
+
+		// Toggle UI for updates
+		function setSwitch(on){
+			if(on){ updatesSwitch.classList.add('on'); updatesSwitch.setAttribute('aria-checked','true'); updatesLabel.textContent='Yes'; updatesOptIn.value='true'; }
+			else{ updatesSwitch.classList.remove('on'); updatesSwitch.setAttribute('aria-checked','false'); updatesLabel.textContent='No'; updatesOptIn.value='false'; }
+		}
+		// initialize on
+		setSwitch(true);
+
+		updatesSwitch.addEventListener('click', ()=> setSwitch(updatesSwitch.getAttribute('aria-checked') !== 'true'));
+		updatesSwitch.addEventListener('keydown', (e)=>{ if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); updatesSwitch.click(); } });
+
+		// Form submission
+		form.addEventListener('submit', async (e)=>{
+			e.preventDefault();
+			formMessage.textContent = '';
+
+			if(!validateForm()){
+				formMessage.textContent = 'Please fix the errors above.'; formMessage.className='error';
+				return;
+			}
+
+			// Build payload
+			const payload = {
+				fullName: fullName.value.trim(),
+				elonEmail: elonEmail.value.trim(),
+				appleEmail: appleEmail.value.trim(),
+				year: year.value || null,
+				orgs: orgs.value.trim() || null,
+				why: why.value.trim() || null,
+				updatesOptIn: updatesOptIn.value === 'true'
+			};
+
+			// Disable submit while sending
+			submitBtn.disabled = true;
+			const originalText = submitBtn.textContent;
+			submitBtn.textContent = 'Sending...';
+
+			try{
+				const res = await fetch(WEBHOOK, {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify(payload)
+				});
+
+				if(!res.ok){
+					throw new Error('Network response was not ok: ' + res.status);
+				}
+
+				// show success then redirect to thank-you
+				formMessage.textContent = 'Thanks! You should receive a TestFlight invite if selected.'; formMessage.className='success';
+				submitBtn.textContent = 'Submitted ✓';
+				// small delay to let user see message
+				setTimeout(()=>{ window.location.href = '/thank-you.html'; }, 900);
+
+			}catch(err){
+				console.error(err);
+				formMessage.textContent = 'There was a problem submitting the form. Please try again.'; formMessage.className='error';
+				submitBtn.disabled = false;
+				submitBtn.textContent = originalText;
+			}
+		});
+	</script>
+</body>
+</html>
