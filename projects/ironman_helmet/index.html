@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iron Man Helmet Build - Tyler Mastrangelo</title>
+    <link rel="stylesheet" href="../../css/styles.css">
+    <!-- Add Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @font-face {
+            font-family: 'Avengeance';
+            src: url('../../files/fonts/AVENGEANCE.ttf') format('truetype');
+        }
+
+        body {
+            background: #0a0a0a;
+            color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .project-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .header-section {
+            text-align: center;
+            padding: 3rem 1rem;
+            background: #111111;
+            border-bottom: 2px solid #cc0000;
+        }
+
+        .project-title {
+            font-family: 'Avengeance', sans-serif;
+            font-size: 3.5rem;
+            color: #cc0000;
+            margin: 0;
+            text-shadow: 0 0 10px rgba(204, 0, 0, 0.3);
+        }
+
+        .project-subtitle {
+            font-size: 1.1rem;
+            color: #888;
+            margin-top: 1rem;
+        }
+
+        .video-section {
+            margin: 2rem 0;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #000;
+            box-shadow: 0 4px 20px rgba(204, 0, 0, 0.15);
+            max-width: 100%;
+            height: auto;
+            aspect-ratio: 16 / 9;
+        }
+
+        .demo-video {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+        }
+
+        .content-section {
+            background: #111111;
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+            border: 1px solid #222;
+        }
+
+        .section-title {
+            font-family: 'Avengeance', sans-serif;
+            font-size: 2rem;
+            color: #cc0000;
+            margin-bottom: 1.5rem;
+        }
+
+        .materials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .material-category {
+            background: #1a1a1a;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #333;
+        }
+
+        .material-category h3 {
+            color: #fff;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .material-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            color: #ccc;
+        }
+
+        .material-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #333;
+        }
+
+        .material-list li:last-child {
+            border-bottom: none;
+        }
+
+        .credit-section {
+            text-align: center;
+            padding: 2rem;
+            background: #111111;
+            margin-top: 3rem;
+            border-radius: 8px;
+        }
+
+        .credit-section h2 {
+            font-family: 'Avengeance', sans-serif;
+            color: #cc0000;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .credit-section p {
+            color: #888;
+        }
+
+        .youtube-link {
+            color: #cc0000;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s ease;
+        }
+
+        .youtube-link:hover {
+            color: #ff0000;
+        }
+
+        .stl-download {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: #cc0000;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .stl-download:hover {
+            background: #ff0000;
+            transform: translateY(-2px);
+        }
+
+        .build-steps {
+            list-style: none;
+            padding: 0;
+            counter-reset: step;
+        }
+
+        .build-step {
+            background: #1a1a1a;
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #333;
+            position: relative;
+        }
+
+        .build-step h3 {
+            color: #cc0000;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .build-step p {
+            color: #ccc;
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .project-title {
+                font-size: 2.5rem;
+            }
+
+            .content-section {
+                padding: 1.5rem;
+            }
+
+            .materials-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="project-container">
+        <div class="header-section">
+            <h1 class="project-title">Iron Man MK3 Helmet</h1>
+            <p class="project-subtitle">A complete build guide for your own wearable Iron Man helmet</p>
+        </div>
+
+        <div class="video-section">
+            <video class="demo-video" controls autoplay loop muted playsinline>
+                <source src="../../files/videos/ironman.MOV" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">Getting Started</h2>
+            <p>Welcome to the Iron Man MK3 Helmet build guide. This project will walk you through creating your own wearable Iron Man helmet using 3D printing, basic electronics, and some patience. The end result is a fully functional helmet with motorized faceplate and LED effects.</p>
+            
+            <a href="files/mk3_helmet.stl" class="stl-download">
+                <i class="fas fa-download"></i>
+                Download STL Files
+            </a>
+        </div>
+
+        <div class="content-section">
+            <h2 class="section-title">Required Components</h2>
+            <div class="materials-grid">
+                <div class="material-category">
+                    <h3><i class="fas fa-cube"></i> 3D Printing</h3>
+                    <ul class="material-list">
+                        <li>PLA or PETG Filament (1kg)</li>
+                        <li>3D Printer (220x220mm minimum)</li>
+                        <li>Support Material</li>
+                    </ul>
+                </div>
+                
+                <div class="material-category">
+                    <h3><i class="fas fa-microchip"></i> Electronics</h3>
+                    <ul class="material-list">
+                        <li>Arduino Nano</li>
+                        <li>2x Servo Motors</li>
+                        <li>LED Strips (for eyes)</li>
+                        <li>9V Battery + Connector</li>
+                        <li>Jumper Wires</li>
+                        <li>2x Toggle Switches</li>
+                    </ul>
+                </div>
+
+                <div class="material-category">
+                    <h3><i class="fas fa-tools"></i> Assembly</h3>
+                    <ul class="material-list">
+                        <li>Super Glue / CA Glue</li>
+                        <li>Elastic Head Strap</li>
+                        <li>M3 Screws and Nuts</li>
+                        <li>Sandpaper (120-400 grit)</li>
+                        <li>Primer Spray</li>
+                        <li>Metallic Red & Gold Paint</li>
+                        <li>Clear Coat</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="credit-section">
+            <h2>Credit & Acknowledgment</h2>
+            <p>This amazing Iron Man helmet design and build process was created by <a href="https://www.youtube.com/@BoxandLoop" class="youtube-link" target="_blank">Box and Loop</a> on YouTube. All credit for the design, STL files, and build process goes to them. Make sure to check out their channel for more incredible projects and detailed build videos!</p>
+        </div>
+    </div>
+    <script src="https://kit.fontawesome.com/your-fontawesome-kit.js" crossorigin="anonymous"></script>
+    </div>
+
+    <script src="../../js/main.js"></script>
+</body>
+</html>
