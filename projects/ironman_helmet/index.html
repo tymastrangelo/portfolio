@@ -8,278 +8,492 @@
     <!-- Add Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @font-face {
-            font-family: 'Avengeance';
-            src: url('../../files/fonts/AVENGEANCE.ttf') format('truetype');
+        :root{
+            --bg:#f7fafc;
+            --card:#ffffff;
+            --muted:#6b7280;
+            --accent:#b91c1c; /* rich red */
+            --accent-2:#0f172a; /* dark text */
+            --edge: #e6edf2;
         }
 
-        body {
-            background: #0a0a0a;
-            color: #ffffff;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
+        /* Base */
+        body{background:var(--bg);color:var(--accent-2);font-family:Inter,ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;margin:0;padding:0}
+        .project-container{max-width:1100px;margin:28px auto;padding:28px}
+
+        /* Header */
+        .header-section{display:flex;gap:24px;align-items:center;background:linear-gradient(180deg,#fff, #fbfbfb);padding:28px;border-radius:12px;border:1px solid var(--edge)}
+        .project-title{font-size:32px;margin:0;color:var(--accent)}
+        .project-subtitle{margin:6px 0 0;color:var(--muted)}
+
+        /* Quick info */
+        .meta{margin-left:auto;text-align:right;color:var(--muted);font-size:14px}
+
+    /* Layout: single column content (sidebar removed from layout) */
+    .main-grid{display:grid;grid-template-columns:1fr;gap:24px;margin-top:20px}
+    @media(max-width:920px){.main-grid{grid-template-columns:1fr}}
+
+        /* TOC */
+        .toc{background:var(--card);padding:16px;border-radius:10px;border:1px solid var(--edge)}
+        .toc h3{margin:0 0 8px;font-size:16px;color:var(--accent)}
+        .toc ul{list-style:none;padding:0;margin:0}
+        .toc a{display:block;padding:6px 0;color:var(--accent-2);text-decoration:none}
+        .toc a:hover{color:var(--accent)}
+        /* Make the TOC sticky and prevent it from appearing as an empty white bar */
+        .toc{width:280px;box-sizing:border-box;transition:width .22s ease;padding:16px}
+        .toc-wrapper{position:relative}
+        .toc-inner{position:sticky;top:20px}
+        @media(max-width:920px){
+            .toc{width:100%}
+            .toc-inner{position:static}
         }
 
-        .project-container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 2rem 1rem;
+
+        /* Floating TOC overlay (moves above content; does not affect layout) */
+    /* Default closed state: hidden and non-interactive. Open state: visible and interactive. */
+    .toc-overlay{position:fixed;right:20px;top:80px;width:320px;height:72vh;background:var(--card);padding:16px;border-radius:10px;border:1px solid var(--edge);box-shadow:0 12px 40px rgba(11,17,23,0.08);transform:translate(110%,0);transition:transform .22s ease,opacity .18s ease;z-index:60;overflow:auto;visibility:hidden;opacity:0;pointer-events:none}
+    .toc-overlay.open{transform:translate(0,0);visibility:visible;opacity:1;pointer-events:auto}
+        .toc-overlay h3{margin-top:0}
+        .toc-overlay ul{max-height:calc(72vh - 48px);overflow:auto;padding:0;margin:0}
+        .toc-overlay a{color:var(--accent-2);display:block;padding:6px 0;text-decoration:none}
+        .toc-overlay a:hover{color:var(--accent)}
+        .toc-toggle-fixed{position:fixed;right:20px;top:20px;z-index:70;padding:8px 12px;border-radius:8px;background:var(--accent);color:#fff;border:none;cursor:pointer;box-shadow:0 6px 18px rgba(15,23,42,0.08)}
+
+        .toc .active{font-weight:700;color:var(--accent)}
+
+        /* Collapse control for small screens */
+        .toc-toggle{display:none;margin-bottom:8px;background:transparent;border:1px solid var(--edge);padding:6px 8px;border-radius:6px;cursor:pointer}
+        @media(max-width:920px){.toc-toggle{display:inline-block}}
+
+        /* Content cards */
+        .content-section{background:var(--card);padding:20px;border-radius:12px;border:1px solid var(--edge);box-shadow:0 6px 18px rgba(15,23,42,0.04);margin-bottom:18px}
+    .content-section{box-sizing:border-box}
+        .section-title{font-size:20px;margin:0 0 12px;color:var(--accent)}
+
+    .video-section{border-radius:10px;overflow:hidden;border:1px solid var(--edge)}
+    .demo-video{width:100%;height:100%;display:block;object-fit:cover}
+    /* Maintain video aspect ratio and ensure it scales nicely on phones */
+    .video-section{aspect-ratio:16/9;max-height:520px}
+
+    /* enable smooth anchor scrolling */
+    html { scroll-behavior: smooth; }
+
+    /* media grid: video + overview side-by-side on larger screens */
+    /* container only — avoid adding duplicate padding so spacing matches other sections */
+    .media-wrapper{margin-bottom:18px}
+    .media-grid{display:grid;grid-template-columns:1fr 360px;gap:20px;align-items:stretch}
+        .media-grid{display:grid;grid-template-columns:1fr 360px;gap:20px;align-items:stretch;grid-auto-rows:1fr}
+        /* ensure both columns stretch to equal height; allow overview to scroll internally if content is longer */
+        .media-grid > .video-section, .media-grid > .content-section{height:100%}
+        .media-grid .content-section{display:flex;flex-direction:column;min-height:0;overflow:auto;margin-bottom:0}
+    /* Make the video column visually match other content cards */
+    .media-grid > .video-section{background:var(--card);border-radius:12px;border:1px solid var(--edge);box-shadow:0 6px 18px rgba(15,23,42,0.04);overflow:hidden;padding:0}
+    /* Hide any vendor native controls that might appear */
+    .demo-video::-webkit-media-controls, .demo-video::-webkit-media-controls-enclosure, .demo-video::-webkit-media-controls-panel{display:none!important}
+    @media(max-width:920px){.media-grid{grid-template-columns:1fr}}
+
+        .materials-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+        @media(max-width:720px){.materials-grid{grid-template-columns:1fr}}
+
+        .material-category{padding:12px;border-radius:8px;background:#fff;border:1px solid var(--edge)}
+        .material-category h3{margin:0 0 8px;font-size:15px}
+
+        .material-list{color:var(--accent-2);margin:0;padding-left:18px}
+        .material-list li{margin:6px 0}
+
+        .stl-download{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:8px;background:var(--accent);color:#fff;text-decoration:none}
+
+        pre{background:#0f172a;color:#e6eef5;padding:12px;border-radius:8px;overflow:auto}
+
+        .info{border-left:4px solid var(--accent);padding:12px 14px;background:linear-gradient(90deg,#fff,#fbfcfd);border-radius:6px}
+
+        .small{color:var(--muted);font-size:13px}
+        /* Responsive tweaks */
+        .toc-overlay{width:320px;right:20px}
+        @media(max-width:920px){
+            /* On small screens, hide overlay above the viewport and slide down when opened */
+            .toc-overlay{position:fixed;right:12px;top:72px;width:calc(100% - 32px);height:60vh;transform:translate(0,-110%);}
+            .toc-overlay.open{transform:translate(0,0)}
+            .toc-toggle-fixed{right:12px}
+            .demo-video{max-height:360px;object-fit:cover}
         }
-
-        .header-section {
-            text-align: center;
-            padding: 3rem 1rem;
-            background: #111111;
-            border-bottom: 2px solid #cc0000;
+        @media(max-width:480px){
+            .toc-overlay{padding:12px;height:56vh}
+            .media-grid{grid-template-columns:1fr}
+            .demo-video{max-height:260px}
+            .project-container{padding:18px}
+            .stl-download{width:100%;justify-content:center;padding:12px 14px;font-weight:600}
+            /* Ensure images and embedded content do not overflow */
+            .content-section img, .content-section iframe, .content-section video{max-width:100%;height:auto}
         }
-
-        .project-title {
-            font-family: 'Avengeance', sans-serif;
-            font-size: 3.5rem;
-            color: #cc0000;
-            margin: 0;
-            text-shadow: 0 0 10px rgba(204, 0, 0, 0.3);
-        }
-
-        .project-subtitle {
-            font-size: 1.1rem;
-            color: #888;
-            margin-top: 1rem;
-        }
-
-        .video-section {
-            margin: 2rem 0;
-            border-radius: 8px;
-            overflow: hidden;
-            background: #000;
-            box-shadow: 0 4px 20px rgba(204, 0, 0, 0.15);
-            max-width: 100%;
-            height: auto;
-            aspect-ratio: 16 / 9;
-        }
-
-        .demo-video {
-            width: 100%;
-            height: 100%;
-            display: block;
-            object-fit: cover;
-        }
-
-        .content-section {
-            background: #111111;
-            padding: 2rem;
-            margin: 2rem 0;
-            border-radius: 8px;
-            border: 1px solid #222;
-        }
-
-        .section-title {
-            font-family: 'Avengeance', sans-serif;
-            font-size: 2rem;
-            color: #cc0000;
-            margin-bottom: 1.5rem;
-        }
-
-        .materials-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        .material-category {
-            background: #1a1a1a;
-            padding: 1.5rem;
-            border-radius: 8px;
-            border: 1px solid #333;
-        }
-
-        .material-category h3 {
-            color: #fff;
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .material-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            color: #ccc;
-        }
-
-        .material-list li {
-            padding: 0.5rem 0;
-            border-bottom: 1px solid #333;
-        }
-
-        .material-list li:last-child {
-            border-bottom: none;
-        }
-
-        .credit-section {
-            text-align: center;
-            padding: 2rem;
-            background: #111111;
-            margin-top: 3rem;
-            border-radius: 8px;
-        }
-
-        .credit-section h2 {
-            font-family: 'Avengeance', sans-serif;
-            color: #cc0000;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .credit-section p {
-            color: #888;
-        }
-
-        .youtube-link {
-            color: #cc0000;
-            text-decoration: none;
-            font-weight: 600;
-            transition: color 0.2s ease;
-        }
-
-        .youtube-link:hover {
-            color: #ff0000;
-        }
-
-        .stl-download {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.75rem 1.5rem;
-            background: #cc0000;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 4px;
-            font-weight: 500;
-            transition: all 0.2s ease;
-        }
-
-        .stl-download:hover {
-            background: #ff0000;
-            transform: translateY(-2px);
-        }
-
-        .build-steps {
-            list-style: none;
-            padding: 0;
-            counter-reset: step;
-        }
-
-        .build-step {
-            background: #1a1a1a;
-            margin-bottom: 1.5rem;
-            padding: 1.5rem;
-            border-radius: 8px;
-            border: 1px solid #333;
-            position: relative;
-        }
-
-        .build-step h3 {
-            color: #cc0000;
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .build-step p {
-            color: #ccc;
-            margin: 0;
-        }
-
-        @media (max-width: 768px) {
-            .project-title {
-                font-size: 2.5rem;
-            }
-
-            .content-section {
-                padding: 1.5rem;
-            }
-
-            .materials-grid {
-                grid-template-columns: 1fr;
-            }
-        }
+        /* backdrop for mobile overlay */
+        .toc-backdrop{position:fixed;inset:0;background:rgba(11,17,23,0.4);z-index:55;visibility:hidden;opacity:0;transition:opacity .18s ease;pointer-events:none}
+        .toc-backdrop.open{visibility:visible;opacity:1;pointer-events:auto}
     </style>
 </head>
 <body>
     <div class="project-container">
         <div class="header-section">
-            <h1 class="project-title">Iron Man MK3 Helmet</h1>
-            <p class="project-subtitle">A complete build guide for your own wearable Iron Man helmet</p>
+            <div>
+                <h1 class="project-title">Iron Man MK3 Helmet</h1>
+                <p class="project-subtitle">A complete build guide for your own wearable Iron Man helmet</p>
+            </div>
+            <div class="meta">
+                <div>Articulated • Wearable</div>
+                <div class="small">Estimated build time: 8+ hours</div>
+            </div>
         </div>
 
-        <div class="video-section">
-            <video class="demo-video" controls autoplay loop muted playsinline>
-                <source src="../../files/videos/ironman.MOV" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-        </div>
+        <div class="main-grid">
+                        <aside class="toc" aria-label="Table of contents" style="display:none;">
+                            <!-- old inline TOC retained for accessibility but hidden; overlay provides navigation instead -->
+                        </aside>
+                        <!-- floating overlay TOC -->
+                        <div class="toc-overlay" id="tocOverlay" aria-hidden="true">
+                            <h3>Guide contents</h3>
+                            <ul id="overlayTocList">
+                                <li><a href="#overview">Overview</a></li>
+                                <li><a href="#quick-steps">Quick Steps</a></li>
+                                <li><a href="#sizing">Sizing</a></li>
+                                <li><a href="#printed-parts">Printed Parts</a></li>
+                                <li><a href="#hardware">Hardware & Electronics</a></li>
+                                <li><a href="#arduino-code">Arduino Code</a></li>
+                                <li><a href="#wiring">Wiring Diagram</a></li>
+                                <li><a href="#dry-assembly">Dry Assembly</a></li>
+                                <li><a href="#finishing">Finishing</a></li>
+                                <li><a href="#credits">Credits</a></li>
+                            </ul>
+                        </div>
+                        <div class="toc-backdrop" id="tocBackdrop" aria-hidden="true"></div>
+                        <button id="tocOverlayToggle" class="toc-toggle-fixed" aria-expanded="false">Contents</button>
 
-        <div class="content-section">
-            <h2 class="section-title">Getting Started</h2>
-            <p>Welcome to the Iron Man MK3 Helmet build guide. This project will walk you through creating your own wearable Iron Man helmet using 3D printing, basic electronics, and some patience. The end result is a fully functional helmet with motorized faceplate and LED effects.</p>
-            
-            <a href="files/mk3_helmet.stl" class="stl-download">
-                <i class="fas fa-download"></i>
-                Download STL Files
-            </a>
-        </div>
+            <div class="media-wrapper">
+                <div class="media-grid">
+                    <div class="video-section">
+                        <video class="demo-video" autoplay muted loop playsinline preload="metadata">
+                            <source src="files/ironman.MOV" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
 
-        <div class="content-section">
-            <h2 class="section-title">Required Components</h2>
-            <div class="materials-grid">
-                <div class="material-category">
-                    <h3><i class="fas fa-cube"></i> 3D Printing</h3>
-                    <ul class="material-list">
-                        <li>PLA or PETG Filament (1kg)</li>
-                        <li>3D Printer (220x220mm minimum)</li>
-                        <li>Support Material</li>
-                    </ul>
+                    <aside class="content-section" id="overview" aria-labelledby="overviewHeading">
+                        <h2 id="overviewHeading" class="section-title">Overview</h2>
+                        <p>Easy to print, easy to build. This guide covers the Iron Man Helmet MK3 — an articulated, wearable helmet with dimmable eyes and a motorized faceplate. It includes a printed parts list, hardware list, Arduino code, wiring notes, and assembly steps.</p>
+                        <p><a href="https://youtu.be/9uIXtODioGM" class="youtube-link" target="_blank">Assembly Video</a> • <a href="https://cults3d.com/en/3d-model/various/iron-man-helmet-articulated-wearable" class="youtube-link" target="_blank">Cults3D</a> • <a href="https://www.thingiverse.com/thing:4629346" class="youtube-link" target="_blank">Thingiverse</a></p>
+                        <a href="files/instructions.pdf" class="stl-download" target="_blank" rel="noopener noreferrer">
+                            <i class="fas fa-download"></i>
+                            Open build instructions (PDF)
+                        </a>
+                    </aside>
                 </div>
-                
+            </div>
+
+                <div class="content-section" id="quick-steps">
+                    <h2 class="section-title">Quick Steps</h2>
+            <ol class="material-list">
+                <li>Size the helmet (print the sizing ring and verify fit over ears).</li>
+                <li>Print all parts.</li>
+                <li>Upload the Arduino code to the Arduino Nano Every.</li>
+                <li>Wire the electronics and test servos/LEDs.</li>
+                <li>Dry assembly and adjust alignment.</li>
+                <li>Smooth, prime, and paint.</li>
+                <li>Final glue-up and hardware.</li>
+                <li>Enjoy!</li>
+            </ol>
+        </div>
+
+                <div class="content-section" id="sizing">
+                    <h2 class="section-title">Sizing the Helmet</h2>
+            <p>To get the correct fit:</p>
+            <ol class="material-list">
+                <li>Print the <strong>Sizing</strong> ring provided with the files.</li>
+                <li>Try the ring on. If it passes snugly over the ears, you're good to print the full helmet.</li>
+                <li>If the sizing ring is too large or small, re-print at a different scale until it fits snugly. Note the percent change you used and apply that size to all parts <em>except</em> the following parts (do not scale these): brain_base, brain_cap, dimmer_arm, dimmer_mount, ServoArm_active, ServoArm_passive.</li>
+                <li>When resizing for battery or mount alignment, use the provided Dome_04-Resize part instead of scaling the main dome.</li>
+            </ol>
+        </div>
+
+                <div class="content-section" id="printed-parts">
+                    <h2 class="section-title">Printed Parts List</h2>
+            <ul class="material-list">
+                <li>Bolt - x8</li>
+                <li>Brain_base, Brain_cap</li>
+                <li>CheekL, CheekR, Chin</li>
+                <li>Dimmer, Dimmer_arm, Dimmer_mount</li>
+                <li>Dome_01, Dome_01-trenchL, Dome_01-trenchR, Dome_02, Dome_03, Dome_04</li>
+                <li>EarL, EarR, Eyes, Face, Jaw, Mouth</li>
+                <li>ServoArm_active, ServoArm_passive, ServoMount_face, ServoMount_head, Visor</li>
+            </ul>
+            <p class="small">Note: the following reference parts should <strong>not</strong> be scaled when resizing the model — do not resize: <em>brain_base, brain_cap, dimmer_arm, dimmer_mount, ServoArm_active, ServoArm_passive</em>. These parts are fit-critical.</p>
+        </div>
+
+                <div class="content-section" id="hardware">
+                    <h2 class="section-title">Hardware & Electronics</h2>
+            <div class="materials-grid">
                 <div class="material-category">
                     <h3><i class="fas fa-microchip"></i> Electronics</h3>
                     <ul class="material-list">
-                        <li>Arduino Nano</li>
-                        <li>2x Servo Motors</li>
-                        <li>LED Strips (for eyes)</li>
-                        <li>9V Battery + Connector</li>
-                        <li>Jumper Wires</li>
-                        <li>2x Toggle Switches</li>
+                        <li>Arduino Nano Every</li>
+                        <li>Servo - ES08MA (x2)</li>
+                        <li>LEDs for eyes (addressable or single-color strips)</li>
+                        <li>Potentiometer (for dimmer)</li>
+                        <li>Slide switch (3-pin), push button (trigger)</li>
+                        <li>Battery pack (4x AAA) with holder and leads</li>
+                        <li>M2, M2.5 bolts and countersunk heads; self-tapping screws</li>
+                        <li>2x 2x6x2.5mm bearings (if required), jumper wires</li>
                     </ul>
                 </div>
 
                 <div class="material-category">
                     <h3><i class="fas fa-tools"></i> Assembly</h3>
                     <ul class="material-list">
-                        <li>Super Glue / CA Glue</li>
-                        <li>Elastic Head Strap</li>
-                        <li>M3 Screws and Nuts</li>
-                        <li>Sandpaper (120-400 grit)</li>
-                        <li>Primer Spray</li>
-                        <li>Metallic Red & Gold Paint</li>
-                        <li>Clear Coat</li>
+                        <li>Super Glue / CA Glue / Weld-On 16</li>
+                        <li>Elastic head strap and helmet padding kit</li>
+                        <li>Sandpaper (120–400 grit), primer spray, red & gold paint, clear coat</li>
+                        <li>Clamps / tape for gluing</li>
                     </ul>
                 </div>
             </div>
         </div>
 
-        <div class="credit-section">
-            <h2>Credit & Acknowledgment</h2>
-            <p>This amazing Iron Man helmet design and build process was created by <a href="https://www.youtube.com/@BoxandLoop" class="youtube-link" target="_blank">Box and Loop</a> on YouTube. All credit for the design, STL files, and build process goes to them. Make sure to check out their channel for more incredible projects and detailed build videos!</p>
+                <div class="content-section" id="arduino-code">
+                    <h2 class="section-title">Arduino Code</h2>
+            <p>Install the <code>ServoEasing</code> library in the Arduino IDE before compiling.</p>
+            <pre class="material-list" style="white-space:pre-wrap;background:#0f172a;color:#d1d5db;padding:12px;border-radius:6px;overflow:auto;">
+#include "ServoEasing.h"
+ServoEasing servoTop;
+ServoEasing servoBottom;
+
+const int action_pin = 2; // trigger/proximity input (pullup)
+const int ledPin = 6;     // eyes
+const int potPin = A0;    // dimmer
+
+int location = 31;
+int bottom_closed = 107;
+int top_closed = 167;
+int bottom_open = 20;
+int top_open = 20;
+int value;
+int maxBrightness;
+
+void setup() {
+  pinMode(action_pin, INPUT_PULLUP);
+  pinMode(potPin, INPUT);
+  servoTop.attach(9);
+  servoBottom.attach(10);
+  setSpeedForAllServos(190);
+  servoTop.setEasingType(EASE_CUBIC_IN_OUT);
+  servoBottom.setEasingType(EASE_CUBIC_IN_OUT);
+  synchronizeAllServosStartAndWaitForAllServosToStop();
+}
+
+void loop() {
+  value = analogRead(potPin);
+  maxBrightness = map(value, 250, 750, 0, 255);
+  int proximity = digitalRead(action_pin);
+  if (proximity == LOW) {
+    if (location > bottom_open) {
+      servoTop.setEaseTo(top_open);
+      servoBottom.setEaseTo(bottom_open);
+      synchronizeAllServosStartAndWaitForAllServosToStop();
+      location = bottom_open;
+      delay(10);
+      analogWrite(ledPin, 0);
+    } else {
+      servoTop.setEaseTo(top_closed);
+      servoBottom.setEaseTo(bottom_closed);
+      synchronizeAllServosStartAndWaitForAllServosToStop();
+      location = bottom_closed;
+      delay(50);
+      analogWrite(ledPin, maxBrightness / 3);
+      delay(100);
+      analogWrite(ledPin, maxBrightness / 5);
+      delay(100);
+      analogWrite(ledPin, maxBrightness / 2);
+      delay(100);
+      analogWrite(ledPin, maxBrightness / 3);
+      delay(100);
+      analogWrite(ledPin, maxBrightness);
+      delay(100);
+    }
+  }
+}
+            </pre>
+            <p class="small">Upload via Arduino IDE: install <em>ServoEasing</em>, select the Nano Every board, and upload. Adjust servo constants (closed/open angles) to match your assembly.</p>
         </div>
-    </div>
-    <script src="https://kit.fontawesome.com/your-fontawesome-kit.js" crossorigin="anonymous"></script>
-    </div>
+
+                <div class="content-section" id="wiring">
+                    <h2 class="section-title">Wiring Diagram & Notes</h2>
+            <p>Wiring diagram (click to enlarge):</p>
+            <div style="margin:12px 0;">
+                <a href="files/wiring-diagram.png" target="_blank" rel="noopener noreferrer">
+                    <img src="files/wiring-diagram.png" alt="Wiring diagram for Iron Man MK3 helmet showing servo, LED, potentiometer and switch connections" style="width:100%;height:auto;border-radius:8px;border:1px solid var(--edge);box-shadow:0 6px 18px rgba(15,23,42,0.06);" />
+                </a>
+            </div>
+            <p>Connections (general):</p>
+            <ul class="material-list">
+                <li>Servos: signal to D9 and D10, power to battery (or regulated 5V) and common ground to Arduino.</li>
+                <li>LEDs: controlled via PWM on D6 (or a suitable MOSFET/driver for higher current).</li>
+                <li>Potentiometer: center to A0, outer pins to 5V and GND.</li>
+                <li>Trigger: pull-up input on D2, wire to momentary switch that connects to GND when pressed.</li>
+            </ul>
+        </div>
+
+                <div class="content-section" id="dry-assembly">
+                    <h2 class="section-title">Dry Assembly & Alignment</h2>
+            <ol class="material-list">
+                <li>Assemble servo mounts and test servo range before mounting to helmet parts.</li>
+                <li>Position face to head and use tape/clamps to hold alignment while testing servo travel.</li>
+                <li>If resized, the servo alignment holes may not line up — assemble servo parts separately and mark new hole positions on the helmet shell.</li>
+                <li>Use self-tapping screws for temporary alignment; final assembly should use glue (Weld-On 16) for structural seams.</li>
+            </ol>
+        </div>
+
+                <div class="content-section" id="finishing">
+                    <h2 class="section-title">Finishing</h2>
+            <ol class="material-list">
+                <li>Smooth parts with sandpaper (start coarse, finish fine), then apply primer.</li>
+                <li>Paint red and gold sections. Add clear coat when dry.</li>
+                <li>Install helmet padding and straps for fit.</li>
+            </ol>
+            <p>Video guide for smoothing/painting: <a href="https://youtu.be/xsrnA712-SU" target="_blank">Smoothing & Painting Guide</a></p>
+        </div>
+
+                <div class="credit-section" id="credits">
+                    <h2>Credit & Acknowledgment</h2>
+                    <p>This build uses designs and instructions from <a href="https://www.youtube.com/@BoxandLoop" class="youtube-link" target="_blank">Box and Loop</a>, Cults3D and Thingiverse. All credit goes to the original designers — this page consolidates steps and tips for easier printing and assembly.</p>
+                </div>
+            </div>
+        </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous"></script>
 
     <script src="../../js/main.js"></script>
+        <script>
+            // Floating overlay TOC toggle and active-section highlighting
+            (function(){
+                const overlay = document.getElementById('tocOverlay');
+                const toggle = document.getElementById('tocOverlayToggle');
+                const links = Array.from(document.querySelectorAll('#overlayTocList a'));
+                const sections = links.map(l=> document.querySelector(l.getAttribute('href'))).filter(Boolean);
+
+                function setBodyScrollDisabled(disabled){
+                    if(disabled){ document.body.style.overflow = 'hidden'; }
+                    else { document.body.style.overflow = ''; }
+                }
+
+                const backdrop = document.getElementById('tocBackdrop');
+                if(toggle && overlay){
+                    toggle.addEventListener('click', ()=>{
+                        const open = overlay.classList.toggle('open');
+                        if(backdrop) backdrop.classList.toggle('open', open);
+                        overlay.setAttribute('aria-hidden', String(!open));
+                        toggle.setAttribute('aria-expanded', String(open));
+                        toggle.textContent = open ? 'Close contents' : 'Contents';
+                        // disable background scroll on small screens while overlay is open
+                        if(window.innerWidth <= 920){ setBodyScrollDisabled(open); }
+                    });
+                }
+
+                // Ensure overlay starts closed to avoid stuck-open states on mobile
+                window.addEventListener('load', ()=>{ overlay.classList.remove('open'); overlay.setAttribute('aria-hidden','true'); toggle.setAttribute('aria-expanded','false'); toggle.textContent='Contents'; });
+
+                // IntersectionObserver to highlight active link
+                if(sections.length){
+                    const obs = new IntersectionObserver(entries=>{
+                        entries.forEach(e=>{
+                            const id = e.target.id;
+                            const link = document.querySelector('#overlayTocList a[href="#'+id+'"]');
+                            if(e.isIntersecting){ links.forEach(a=>a.classList.remove('active')); if(link) link.classList.add('active'); }
+                        });
+                    },{root:null,rootMargin:'-30% 0px -40% 0px',threshold:0});
+                    sections.forEach(s=>obs.observe(s));
+                }
+
+                // Auto-close overlay on mouseleave for desktop
+                if(overlay){
+                    overlay.addEventListener('mouseleave', ()=>{ if(window.innerWidth > 920){ overlay.classList.remove('open'); overlay.setAttribute('aria-hidden','true'); toggle.setAttribute('aria-expanded','false'); toggle.textContent='Contents'; } });
+                }
+                // Close overlay when a link is clicked (all sizes) — animate scroll to target so navigation always smooth
+                links.forEach(l=> l.addEventListener('click', (e)=>{
+                    const href = l.getAttribute('href') || '';
+                    if(href.startsWith('#')){
+                        const target = document.querySelector(href);
+                        if(target){
+                            e.preventDefault();
+                            // close overlay but do not steal focus
+                            closeOverlay(false);
+                            // small timeout so overlay/backdrop is removed before scrolling
+                            setTimeout(()=> target.scrollIntoView({behavior:'smooth', block:'start'}), 60);
+                        }
+                    } else {
+                        // non-anchor links: just close overlay
+                        closeOverlay(false);
+                    }
+                }));
+
+                // Close overlay on outside click/tap and Escape key; manage focus and body scroll when opened
+                function closeOverlay(focusToggle = true){ overlay.classList.remove('open'); if(backdrop) backdrop.classList.remove('open'); overlay.setAttribute('aria-hidden','true'); toggle.setAttribute('aria-expanded','false'); toggle.textContent='Contents'; setBodyScrollDisabled(false); if(focusToggle) toggle.focus(); }
+                document.addEventListener('click', (e)=>{
+                    if(overlay.classList.contains('open')){
+                        const within = overlay.contains(e.target) || toggle.contains(e.target);
+                        if(!within){ closeOverlay(); }
+                    }
+                });
+                // touchstart for mobile immediate taps (outside overlay)
+                document.addEventListener('touchstart', (e)=>{
+                    if(overlay.classList.contains('open')){
+                        const within = overlay.contains(e.target) || toggle.contains(e.target) || (backdrop && backdrop.contains(e.target));
+                        if(!within){ closeOverlay(); }
+                    }
+                }, {passive:true});
+                document.addEventListener('keydown',(e)=>{
+                    if(e.key === 'Escape' && overlay.classList.contains('open')){
+                        closeOverlay();
+                    }
+                });
+                // On resize, ensure the overlay state matches the new viewport
+                let lastWidth = window.innerWidth;
+                window.addEventListener('resize', ()=>{
+                    const w = window.innerWidth;
+                    if((lastWidth <= 920 && w > 920) || (lastWidth > 920 && w <= 920)){
+                        // reset overlay to closed to avoid stuck open state
+                        closeOverlay();
+                    }
+                    lastWidth = w;
+                });
+                // backdrop click closes overlay
+                if(backdrop){ backdrop.addEventListener('click', closeOverlay); }
+                // When opening, move focus into the first link for keyboard users
+                if(toggle){ toggle.addEventListener('click', ()=>{ if(overlay.classList.contains('open')){ const first = overlay.querySelector('a'); if(first) first.focus(); } }); }
+
+                // Keep Overview column height in sync with the video height so the two columns match visually
+                function syncOverviewHeight(){
+                    try{
+                        const videoSection = document.querySelector('.media-grid .video-section');
+                        const overview = document.querySelector('.media-grid .content-section');
+                        if(!videoSection || !overview) return;
+                        // Only enforce equal heights on wide screens where the grid is two-column
+                        if(window.innerWidth > 920){
+                            // clear previous explicit height first
+                            overview.style.height = '';
+                            overview.style.boxSizing = 'border-box';
+                            const h = videoSection.getBoundingClientRect().height;
+                            // set exact height so overview column matches video; allow internal scrolling
+                            overview.style.height = Math.round(h) + 'px';
+                            overview.style.overflow = 'auto';
+                        } else {
+                            // on narrow screens, remove forced height so content flows naturally
+                            overview.style.height = '';
+                            overview.style.overflow = '';
+                        }
+                    }catch(e){ /* ignore */ }
+                }
+                const demoVideoEl = document.querySelector('.media-grid .demo-video');
+                window.addEventListener('load', syncOverviewHeight);
+                window.addEventListener('resize', ()=>{ setTimeout(syncOverviewHeight, 120); });
+                if(demoVideoEl){ demoVideoEl.addEventListener('loadedmetadata', syncOverviewHeight); demoVideoEl.addEventListener('play', syncOverviewHeight); }
+            })();
+        </script>
 </body>
 </html>
