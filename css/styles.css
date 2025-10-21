@@ -105,6 +105,59 @@ body.fade-out {
 .project-title-text:hover{ color: #0ea5e9; /* sky-500 */ }
 .project-title-text{ cursor: pointer; }
 
+/* Projects page sections */
+.projects-section summary{
+  display: block; /* ensure block so padding creates space */
+  list-style: none;
+  cursor: pointer;
+  position: relative;
+  padding-left: 40px; /* larger room for triangle so it doesn't overlap the text */
+  padding-top: 8px;
+  padding-bottom: 8px;
+  z-index: 1; /* keep the text above the pseudo element */
+}
+.projects-section summary::-webkit-details-marker{ display:none }
+.projects-section summary::before{
+  content: "";
+  position: absolute;
+  left: 10px; /* place the triangle further left in the gutter */
+  top: 50%;
+  transform: translateY(-50%) rotate(0deg);
+  width: 0; height: 0;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-left: 8px solid #94a3b8; /* small right-pointing triangle */
+  transition: transform .18s ease, border-left-color .18s ease;
+  pointer-events: none; /* let clicks hit the summary text */
+  z-index: 0; /* sit behind the text */
+}
+.projects-section details[open] > summary::before{
+  transform: translateY(-50%) rotate(90deg); /* point down when open */
+  border-left-color: #0ea5e9;
+}
+.projects-list .project-title{ padding:6px 4px; border-radius:6px }
+.projects-list .project-title:hover{ background: rgba(14,165,233,0.06); color:#0369a1 }
+
+@media(max-width:767px){
+  /* Make details behave like stacked sections on mobile */
+  .projects-section summary{ font-size:18px }
+  .projects-list{ padding-left:12px }
+}
+
+/* Layout constraints for projects page */
+.grid.md\:grid-cols-3{ gap: 2rem }
+.projects-section .project-title{ cursor: pointer }
+.section-header h3{ margin:0 0 6px }
+
+/* Prevent preview area from stretching too wide */
+#project-preview{ max-width:1200px }
+#project-link{ max-width:960px }
+
+@media(min-width:1100px){
+  /* make the left column narrower on very wide screens */
+  .md\:col-span-1{ max-width:360px }
+}
+
 /* Devicon hover colors */
 .devicon-python-plain:hover { color: #3776AB; }
 .devicon-java-plain:hover { color: #007396; }
