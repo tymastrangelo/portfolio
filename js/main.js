@@ -215,9 +215,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Desktop hover and keyboard interactions
   titles.forEach((title) => {
     // Mouse hover
-    title.addEventListener("mouseenter", () => {
-      if (window.innerWidth >= 768) showProject(title);
-    });
+    // (Hover handling consolidated below via a single pointer listener on the project list)
 
     // Click/tap
     title.addEventListener("click", () => {
@@ -248,6 +246,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Auto-load first project
   if (titles.length > 0) showProject(titles[0]);
+
+  // Per-title hover: attach mouseenter to the inner text element (or li fallback)
+  titles.forEach((title) => {
+    const titleTextEl = title.querySelector('.project-title-text');
+    if (titleTextEl) {
+      titleTextEl.addEventListener('mouseenter', () => { if (window.innerWidth >= 768) showProject(title); });
+    } else {
+      title.addEventListener('mouseenter', () => { if (window.innerWidth >= 768) showProject(title); });
+    }
+  });
+
+  // (removed caret-based helper; per-title hover above is used instead)
 });
 
 // Initial call in case nav/footer fail to load

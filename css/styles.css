@@ -92,6 +92,19 @@ body.fade-out {
   transform: scale(1.15);
 }
 
+/* Reduce project title hit area so hover only triggers when pointer is over text */
+.project-title {
+  display: block; /* keep list item block layout */
+}
+
+/* inner text element controls the smaller hit area */
+.project-title-text{
+  display:inline-block;
+  padding:2px 6px;
+}
+.project-title-text:hover{ color: #0ea5e9; /* sky-500 */ }
+.project-title-text{ cursor: pointer; }
+
 /* Devicon hover colors */
 .devicon-python-plain:hover { color: #3776AB; }
 .devicon-java-plain:hover { color: #007396; }
