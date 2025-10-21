@@ -383,15 +383,14 @@ void loop() {
                 }
 
                 const backdrop = document.getElementById('tocBackdrop');
+                // helpers to open/close overlay with consistent behavior
+                function openOverlay(){ overlay.classList.add('open'); if(backdrop) backdrop.classList.add('open'); overlay.setAttribute('aria-hidden','false'); toggle.setAttribute('aria-expanded','true'); toggle.textContent = 'Close contents'; if(window.innerWidth <= 920) setBodyScrollDisabled(true); }
+                function closeOverlay(focusToggle = true){ overlay.classList.remove('open'); if(backdrop) backdrop.classList.remove('open'); overlay.setAttribute('aria-hidden','true'); toggle.setAttribute('aria-expanded','false'); toggle.textContent='Contents'; setBodyScrollDisabled(false); if(focusToggle) toggle.focus(); }
+
                 if(toggle && overlay){
                     toggle.addEventListener('click', ()=>{
-                        const open = overlay.classList.toggle('open');
-                        if(backdrop) backdrop.classList.toggle('open', open);
-                        overlay.setAttribute('aria-hidden', String(!open));
-                        toggle.setAttribute('aria-expanded', String(open));
-                        toggle.textContent = open ? 'Close contents' : 'Contents';
-                        // disable background scroll on small screens while overlay is open
-                        if(window.innerWidth <= 920){ setBodyScrollDisabled(open); }
+                        const open = overlay.classList.contains('open');
+                        if(open) closeOverlay(); else openOverlay();
                     });
                 }
 
@@ -433,7 +432,7 @@ void loop() {
                 }));
 
                 // Close overlay on outside click/tap and Escape key; manage focus and body scroll when opened
-                function closeOverlay(focusToggle = true){ overlay.classList.remove('open'); if(backdrop) backdrop.classList.remove('open'); overlay.setAttribute('aria-hidden','true'); toggle.setAttribute('aria-expanded','false'); toggle.textContent='Contents'; setBodyScrollDisabled(false); if(focusToggle) toggle.focus(); }
+                // (closeOverlay defined earlier so it's shared)
                 document.addEventListener('click', (e)=>{
                     if(overlay.classList.contains('open')){
                         const within = overlay.contains(e.target) || toggle.contains(e.target);
@@ -467,32 +466,57 @@ void loop() {
                 // When opening, move focus into the first link for keyboard users
                 if(toggle){ toggle.addEventListener('click', ()=>{ if(overlay.classList.contains('open')){ const first = overlay.querySelector('a'); if(first) first.focus(); } }); }
 
-                // Keep Overview column height in sync with the video height so the two columns match visually
+                // Keep Overview column height in sync with the video height so the two columns match visually.
+                // Use ResizeObserver where available and listen for video events. This is more robust across
+                // playback, aspect changes and browser UI events.
                 function syncOverviewHeight(){
                     try{
                         const videoSection = document.querySelector('.media-grid .video-section');
                         const overview = document.querySelector('.media-grid .content-section');
                         if(!videoSection || !overview) return;
+
                         // Only enforce equal heights on wide screens where the grid is two-column
                         if(window.innerWidth > 920){
-                            // clear previous explicit height first
+                            // clear previous explicit height first to measure correctly
                             overview.style.height = '';
                             overview.style.boxSizing = 'border-box';
-                            const h = videoSection.getBoundingClientRect().height;
-                            // set exact height so overview column matches video; allow internal scrolling
-                            overview.style.height = Math.round(h) + 'px';
+                            // Measure the computed height of the video column
+                            const h = Math.round(videoSection.getBoundingClientRect().height);
+                            // Apply exact height so overview column visually matches video; allow internal scrolling
+                            overview.style.height = h + 'px';
                             overview.style.overflow = 'auto';
                         } else {
                             // on narrow screens, remove forced height so content flows naturally
                             overview.style.height = '';
                             overview.style.overflow = '';
                         }
-                    }catch(e){ /* ignore */ }
+                    }catch(e){ /* ignore measurement errors */ }
                 }
+
                 const demoVideoEl = document.querySelector('.media-grid .demo-video');
+                // Initial sync on load
                 window.addEventListener('load', syncOverviewHeight);
-                window.addEventListener('resize', ()=>{ setTimeout(syncOverviewHeight, 120); });
-                if(demoVideoEl){ demoVideoEl.addEventListener('loadedmetadata', syncOverviewHeight); demoVideoEl.addEventListener('play', syncOverviewHeight); }
+                // Resize: batch via requestAnimationFrame
+                window.addEventListener('resize', ()=>{ requestAnimationFrame(syncOverviewHeight); });
+
+                // Use ResizeObserver to track layout changes in the video column and overview column
+                if(window.ResizeObserver){
+                    try{
+                        const ro = new ResizeObserver(()=> requestAnimationFrame(syncOverviewHeight));
+                        const videoSectionEl = document.querySelector('.media-grid .video-section');
+                        const overviewEl = document.querySelector('.media-grid .content-section');
+                        if(videoSectionEl) ro.observe(videoSectionEl);
+                        if(overviewEl) ro.observe(overviewEl);
+                    }catch(e){ /* ignore if observation fails */ }
+                }
+
+                // Also refresh when the video metadata loads or playback state changes
+                if(demoVideoEl){
+                    demoVideoEl.addEventListener('loadedmetadata', syncOverviewHeight);
+                    demoVideoEl.addEventListener('play', syncOverviewHeight);
+                    demoVideoEl.addEventListener('pause', syncOverviewHeight);
+                    demoVideoEl.addEventListener('resize', syncOverviewHeight);
+                }
             })();
         </script>
 </body>

@@ -191,12 +191,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Set appropriate action text based on project type
     const projectAction = document.getElementById("project-action");
-    if (title.textContent.includes("Game")) {
-      projectAction.textContent = "Click to Play";
-    } else if (url === "#") {
-      projectAction.textContent = "Coming Soon";
-    } else {
-      projectAction.textContent = "Click to View";
+    if (projectAction) {
+      // If the project title indicates a game, show play text
+      if (title.textContent.includes("Game")) {
+        projectAction.textContent = "Click to Play";
+      } else if (url === "#") {
+        projectAction.textContent = "Coming Soon";
+      } else if (url && url.toLowerCase().includes('testflight-form')) {
+        // Special case: any link to the TestFlight beta signup should invite users to join the beta
+        projectAction.textContent = "Join Beta";
+      } else {
+        projectAction.textContent = "Click to View";
+      }
     }
 
     preview.style.opacity = 1;
