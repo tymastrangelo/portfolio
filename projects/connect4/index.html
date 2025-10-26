@@ -11,67 +11,133 @@
 </head>
 <body class="bg-slate-50 text-slate-800">
   <div id="nav-container"></div>
-  <div class="max-w-4xl mx-auto px-6 pt-24 sm:pt-32 pb-16">
-    <header class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-      <div>
-        <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900">Connect 4</h1>
-        <p class="text-sm text-slate-500 mt-1">Responsive, animated, keyboard & touch friendly</p>
-      </div>
 
-      <div class="flex items-center gap-4">
-        <div id="current-player" class="flex items-center gap-3 px-3 py-2 bg-white rounded-lg shadow-sm">
-          <div id="current-piece" class="w-5 h-5 rounded-full border"></div>
-          <div class="text-sm font-medium" id="current-player-text">Red's turn</div>
+  <main class="pt-24 sm:pt-32 pb-20 px-5 sm:px-6">
+    <div class="max-w-5xl mx-auto space-y-10">
+      <header class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-sky-600 via-blue-500 to-indigo-600 text-white shadow-xl">
+        <div class="absolute -top-14 -right-12 h-44 w-44 rounded-full bg-blue-300/30 blur-2xl"></div>
+        <div class="absolute -bottom-16 -left-14 h-52 w-52 rounded-full bg-sky-200/30 blur-2xl"></div>
+        <div class="relative px-6 sm:px-10 py-10 lg:py-14">
+          <div class="grid gap-10 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)] lg:items-center">
+            <div class="max-w-xl">
+              <span class="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em]">Connect 4</span>
+              <h1 class="mt-5 text-4xl sm:text-5xl font-extrabold tracking-tight">Drop, Connect, Celebrate</h1>
+              <p class="mt-4 text-base sm:text-lg text-white/90 leading-relaxed">
+                Challenge a friend side-by-side or switch on the smart AI for a solo match. Animated discs and touch gestures make the experience feel native on every screen size.
+              </p>
+              <div class="mt-6 flex flex-wrap gap-3 text-sm">
+                <span class="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1.5">
+                  <i class="fas fa-gamepad text-white/80"></i>
+                  Touch friendly
+                </span>
+                <span class="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1.5">
+                  <i class="fas fa-robot text-white/80"></i>
+                  3 AI levels
+                </span>
+                <span class="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1.5">
+                  <i class="fas fa-chart-line text-white/80"></i>
+                  Persistent scores
+                </span>
+              </div>
+            </div>
+
+            <div class="w-full max-w-sm justify-self-end">
+              <div class="rounded-2xl bg-white/15 backdrop-blur px-5 py-5 shadow-lg">
+                <div class="text-xs uppercase tracking-[0.3em] text-white/70">Current turn</div>
+                <div id="current-player" class="mt-4 flex items-center gap-3">
+                  <div id="current-piece" class="h-6 w-6 rounded-full border-2 border-white/60 shadow-inner"></div>
+                  <span id="current-player-text" class="text-lg font-semibold">Red's turn</span>
+                </div>
+                <dl id="scoreboard" class="mt-5 grid grid-cols-3 gap-3 text-sm font-semibold text-white">
+                  <div class="rounded-xl bg-white/15 p-3 text-center">
+                    <dt class="text-[11px] uppercase tracking-widest text-white/70">Red</dt>
+                    <dd class="mt-1 text-lg">🔴 <span id="redWins">0</span></dd>
+                  </div>
+                  <div class="rounded-xl bg-white/15 p-3 text-center">
+                    <dt class="text-[11px] uppercase tracking-widest text-white/70">Yellow</dt>
+                    <dd class="mt-1 text-lg">💛 <span id="yellowWins">0</span></dd>
+                  </div>
+                  <div class="rounded-xl bg-white/15 p-3 text-center">
+                    <dt class="text-[11px] uppercase tracking-widest text-white/70">Draws</dt>
+                    <dd class="mt-1 text-lg"><span id="draws">0</span></dd>
+                  </div>
+                </dl>
+                <button id="resetScores" class="mt-4 w-full inline-flex items-center justify-center gap-2 rounded-full bg-white text-sm font-semibold text-sky-600 px-4 py-2 shadow-lg">
+                  <i class="fas fa-rotate"></i>
+                  Reset scores
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
+      </header>
 
-        <div id="scoreboard" class="flex items-center gap-3 bg-white rounded-lg shadow-sm px-3 py-2 text-sm">
-          <div>🔴 <span id="redWins">0</span></div>
-          <div>—</div>
-          <div>💛 <span id="yellowWins">0</span></div>
-          <div class="text-slate-300">|</div>
-          <div>Draws: <span id="draws">0</span></div>
-        </div>
-
-        <div class="flex items-center gap-2">
-          <label class="flex items-center gap-2 text-sm bg-white px-3 py-1 rounded-md shadow-sm">
-            <input id="playVsAI" type="checkbox" />
-            <span class="ml-1">Play vs AI</span>
-          </label>
-
-          <div id="ai-settings" class="flex items-center gap-2 bg-white px-2 py-1 rounded-md shadow-sm" style="display:none;">
-            <label class="text-sm flex items-center gap-2">
-              <span class="text-xs text-slate-500">AI</span>
-              <select id="aiDifficulty" class="text-sm rounded-md px-2 py-1" aria-label="AI difficulty">
-                <option value="easy">Easy</option>
-                <option value="medium">Medium</option>
-                <option value="hard">Hard</option>
-              </select>
+      <section class="grid gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1.3fr)]">
+        <aside class="space-y-6">
+          <div class="rounded-3xl bg-white shadow-lg ring-1 ring-slate-200/70 px-6 py-6">
+            <h2 class="text-lg font-semibold text-slate-900">Match Options</h2>
+            <p class="mt-1 text-sm text-slate-500">Configure the AI or play head-to-head on the same device.</p>
+            <label class="mt-5 flex items-center justify-between rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-700">
+              <span class="flex items-center gap-3">
+                <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-white shadow-inner">
+                  <i class="fas fa-robot text-slate-600"></i>
+                </span>
+                Play against AI
+              </span>
+              <input id="playVsAI" type="checkbox" class="h-5 w-5 rounded border-slate-300 text-sky-600 focus:ring-sky-500" />
             </label>
 
-            <label class="flex items-center gap-2 text-sm">
-              <input id="aiFirst" type="checkbox" />
-              <span class="text-xs text-slate-500">AI goes first</span>
-            </label>
+            <div id="ai-settings" class="mt-4 space-y-4 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4" style="display:none;">
+              <div class="flex items-center justify-between text-sm text-slate-600">
+                <span class="flex items-center gap-2 font-semibold text-slate-700">
+                  <i class="fas fa-wave-square text-slate-500"></i>
+                  AI difficulty
+                </span>
+                <select id="aiDifficulty" class="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-700 focus:border-sky-500 focus:outline-none" aria-label="AI difficulty">
+                  <option value="easy">Easy</option>
+                  <option value="medium">Medium</option>
+                  <option value="hard">Hard</option>
+                </select>
+              </div>
+
+              <label class="flex items-center justify-between rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700">
+                <span class="flex items-center gap-2">
+                  <i class="fas fa-forward text-slate-500"></i>
+                  AI moves first
+                </span>
+                <input id="aiFirst" type="checkbox" class="h-5 w-5 rounded border-slate-300 text-sky-600 focus:ring-sky-500" />
+              </label>
+            </div>
           </div>
 
-          <button id="resetScores" class="ml-2 inline-flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-pink-500 to-orange-400 text-white rounded-lg shadow-sm text-sm">Reset Scores</button>
+          <div class="rounded-3xl bg-white shadow-lg ring-1 ring-slate-200/70 px-6 py-6 space-y-4">
+            <h3 class="text-sm font-semibold uppercase tracking-[0.25em] text-slate-500">How to play</h3>
+            <ul class="space-y-3 text-sm text-slate-600">
+              <li class="flex gap-3">
+                <span class="mt-1 h-2.5 w-2.5 rounded-full bg-sky-500"></span>
+                <span>Touch or click columns to preview, then tap again to confirm the move.</span>
+              </li>
+              <li class="flex gap-3">
+                <span class="mt-1 h-2.5 w-2.5 rounded-full bg-sky-500"></span>
+                <span>Scores and AI settings save locally, so you can pick up the rivalry later.</span>
+              </li>
+            </ul>
+          </div>
+        </aside>
+
+        <div class="rounded-3xl bg-white shadow-2xl ring-1 ring-slate-200/70 px-5 sm:px-6 py-6">
+          <div id="winner" class="flex h-10 items-center justify-center text-base sm:text-lg font-semibold text-sky-600"></div>
+          <div id="board-wrap" class="mx-auto w-full max-w-2xl">
+            <div id="board" class="board" role="grid" aria-label="Connect four board"></div>
+          </div>
+          <div class="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
+            <button id="playAgain" class="play-again-btn text-sm sm:text-base" style="display:none;">🔁 Play again</button>
+            <button id="newGame" class="play-again-btn bg-slate-700 text-sm sm:text-base">New game</button>
+          </div>
         </div>
-      </div>
-    </header>
-
-    <section class="flex flex-col items-center gap-4">
-      <div id="winner" class="h-8 text-center text-xl font-semibold text-sky-600"></div>
-
-      <div id="board-wrap" class="w-full max-w-2xl">
-        <div id="board" class="board" role="grid" aria-label="Connect four board"></div>
-      </div>
-
-      <div class="flex gap-3">
-        <button id="playAgain" class="play-again-btn" style="display:none;">🔄 Play Again</button>
-        <button id="newGame" class="play-again-btn bg-slate-700">New Game</button>
-      </div>
-    </section>
-  </div>
+      </section>
+    </div>
+  </main>
 
   <div id="footer-container"></div>
 
