@@ -197,9 +197,9 @@ document.addEventListener("DOMContentLoaded", () => {
         projectAction.textContent = "Click to Play";
       } else if (url === "#") {
         projectAction.textContent = "Coming Soon";
-      } else if (url && url.toLowerCase().includes('testflight-form')) {
-        // Special case: any link to the TestFlight beta signup should invite users to join the beta
-        projectAction.textContent = "Join Beta";
+      } else if (url && url.toLowerCase().includes('tymastrangelo.com/quad')) {
+        // Special case: direct link to the Quad landing page
+        projectAction.textContent = "Explore Quad";
       } else {
         projectAction.textContent = "Click to View";
       }

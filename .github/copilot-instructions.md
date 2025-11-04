@@ -1,0 +1,22 @@
+# Copilot Instructions
+
+- **Project** Static personal portfolio served from GitHub Pages; everything ships directly from the repo root (no bundlers or frameworks), so edits should stay compatible with plain HTML/CSS/JS.
+- **Styling** Tailwind comes from the CDN tag on every page; shared customizations live in `css/styles.css`. Put cross-page tweaks there and reserve inline `<style>` blocks for page-only effects.
+- **Shared layout** Navigation (`nav.html`) and footer (`footer.html`) are fetched at runtime into placeholder divs with the ids `nav-container` and `footer-container`. Any new page must include those containers and load `js/main.js` with `defer` so shared UI keeps working.
+- **Local preview** Because `main.js` fetches `/nav.html` and `/footer.html` with leading slashes, open the site through a local server started at the repo root (for example `npx serve .`). Loading via `file://` will block the fetch calls.
+- **Main script lifecycle** `main.js` waits until both nav and footer finish loading before calling `initSiteFeatures()`, which wires up the mobile menu, sticky-nav styling, page fade transitions, active-link highlighting, typewriter effect, and footer year update. If you add new shared behavior, hook it into `initSiteFeatures()`.
+- **Navigation quirks** The mobile menu toggles a `mobile-menu-open` class on `<body>` and expects `.hamburger-icon` markup from `nav.html`. Keep IDs (`mobile-menu-button`, `mobile-menu`) intact when adjusting the navigation markup.
+- **Page transitions** Smooth fades rely on the global click handler in `setupPageTransitions()` plus `.fade-out` styles in `css/styles.css`. When adding internal links, avoid `target="_blank"` unless truly external so the transitions keep working.
+- **Active link logic** `setActiveNavLink()` compares `window.location.pathname` against the `href` attribute. When adding menu items, ensure the links use absolute paths (e.g., `/about.html`) so they highlight correctly.
+- **Hero typewriter** `setupTypewriterEffect()` targets `.typewriter` (currently on `index.html`). To adjust the rotating roles or speeds, edit the arrays and timing constants near the top of that function.
+- **Projects page** `projects.html` drives the right-hand preview entirely through `data-*` attributes on `.project-title` elements. Follow the `data-image`, `data-description`, and `data-link` pattern when adding projects so `showProject()` keeps working.
+- **Project actions** `showProject()` inspects the project title and URL to pick user prompts like “Explore Quad” or “Click to Play”. Update the conditional logic there if you introduce new project categories.
+- **Scroll reveal** Index page sections use the inline `reveal()` helper, which toggles `.scroll-reveal.active`. Reuse the `scroll-reveal` class on new blocks if you want them to animate consistently.
+- **Contact form** `contact.html` posts JSON to an n8n webhook (`https://n8n.tymastrangelo.com/...`). The inline script swaps visibility between elements with the ids `formContent` and `successMessage` and expects matching markup. Preserve those IDs when adjusting the form or success view.
+- **External icons** Font Awesome and Devicon are loaded globally; prefer their existing class patterns for consistency with the Tailwind palette.
+- **Asset paths** Images and downloads live under `images/`, `files/`, and nested project folders. Use root-relative paths (e.g., `/images/...`) when linking from top-level pages so GitHub Pages serves them correctly.
+- **Mini-apps** Standalone projects inside `projects/` (like `projects/connect4/`) ship their own CSS/JS. Keep their markup self-contained—they are linked from the main site but not bundled.
+- **Connect 4 specifics** The game stores scores in `localStorage` under `c4-scores` and AI settings under `c4-ai`. When changing those keys, update the related load/save helpers to avoid breaking existing saves.
+- **Publishing** Deployment happens automatically through GitHub Pages on `main`. Ensure any new assets or pages referenced by absolute URLs are committed before expecting them live.
+- **Custom domain** `CNAME` maps the site to `tymastrangelo.com`. Do not remove or rename this file.
+- **Accessibility** Interactive project titles and navigation links already include keyboard handlers and ARIA tweaks; keep attributes like `tabindex`, `role="button"`, and `aria-label` intact when refactoring those elements.
